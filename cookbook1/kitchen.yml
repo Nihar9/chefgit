@@ -1,0 +1,41 @@
+---
+driver:
+  name: ec2
+  aws_ssh_key_id: aws
+  region: us-east-1
+  availability_zone: e
+  subnet_id: subnet-4d91b073 
+  instance_type: t2.micro
+  image_id: ami-0323c3dd2da7fb37d
+  security_group_ids: ["sg-027c7263b0d6955b8"]
+
+ 
+
+## The forwarded_port port feature lets you connect to ports on the VM guest via
+## localhost on the host.
+## see also: https://www.vagrantup.com/docs/networking/forwarded_ports.html
+
+#  network:
+#    - ["forwarded_port", {guest: 80, host: 8080}]
+
+provisioner:
+  name: chef_zero
+
+  ## product_name and product_version specifies a specific Chef product and version to install.
+  ## see the Chef documentation for more details: https://docs.chef.io/config_yml_kitchen.html
+  #  product_name: chef
+  #  product_version: 15
+
+verifier:
+  name: inspec
+
+platforms:
+  - name: Amazon Linux 
+#  - name: centos-7
+
+suites:
+  - name: default
+    verifier:
+      inspec_tests:
+        - test/integration/default
+    attributes:
